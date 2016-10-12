@@ -1,3 +1,13 @@
+/*
+ ============================================================================
+ Name        : QuickSort.c
+ Author      : ki
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -16,31 +26,51 @@ void exch(int data[], int a, int b){
     data[b] = temp;
 }
 
-void ShellSort(int data[], int length){
-    int i,j;
-    int h = 1;
-
-    while(h < length/3){
-        h=(3*h)+1;
-    }
-
-    for(; h >= 1; h/=3){
-        for(i=h; i<length; i++){
-            for(j=i; j>=h && less(data[j], data[j-h]); j-=h){
-                exch(data,j,j-h);
-            }
-        }
-    }
-}
-
 void printArray(int data[], int length){
     int i;
     for(i=0; i<length; i++){
         printf("%d ", data[i]);
     }
 }
+void testdata(int data[], int length){
+    int i;
+	for(i=0; i<length; i++){
+        printf("%d", data[i]);
+	}
+	printf(" ");
+}
 
-int main() {
+void QuickSort(int data[], int lo, int hi){
+	int i = lo;
+	int j = hi+1;
+
+	if(lo >= hi){
+        return;
+	}
+	while(i<j){
+		while(less(data[++i], data[lo])){
+			if(i==hi){
+			    break;
+			}
+		}
+		while(less(data[lo], data[--j])){
+			if(j==lo){
+			    break;
+			}
+		}
+		if(i>=j){
+			break;
+		}
+		exch(data, i, j);
+
+	}
+	exch(data, lo, j);
+
+	QuickSort(data, lo, j-1);
+	QuickSort(data, j+1, hi);
+}
+
+int main(){
     int *data;
     int i,length;
 
@@ -59,12 +89,12 @@ int main() {
 
 
     /**************** sort ****************/
-    ShellSort(data, length);
+    QuickSort(data, 0, length-1);
     /**************** end sort ****************/
 
 
     /**************** show result ****************/
-    printf("after ShellSort :");
+    printf("after QuickSort :");
     printArray(data, length);
     /**************** end show result ****************/
 

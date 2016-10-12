@@ -1,4 +1,4 @@
-#include <stdio.h>
+(#include <stdio.h>
 #include <stdlib.h>
 
 int less(int a, int b){
@@ -10,18 +10,26 @@ int less(int a, int b){
     }
 }
 
-void SelectionSort(int data[], int length){
-    int i, j, temp, min;
-    for(i=0; i<length; i++){
-        min = i;
-        for(j=i; j<length; j++){
-            if(less(data[j], data[min])){
-                min = j;
+void exch(int data[], int a, int b){
+    int temp = data[a];
+    data[a] = data[b];
+    data[b] = temp;
+}
+
+void ShellSort(int data[], int length){
+    int i,j;
+    int h = 1;
+
+    while(h < length/3){
+        h=(3*h)+1;
+    }
+
+    for(; h >= 1; h/=3){
+        for(i=h; i<length; i++){
+            for(j=i; j>=h && less(data[j], data[j-h]); j-=h){
+                exch(data,j,j-h);
             }
         }
-        temp = data[i];
-        data[i] = data[min];
-        data[min] = temp;
     }
 }
 
@@ -32,8 +40,7 @@ void printArray(int data[], int length){
     }
 }
 
-int main()
-{
+int main() {
     int *data;
     int i,length;
 
@@ -52,12 +59,12 @@ int main()
 
 
     /**************** sort ****************/
-    SelectionSort(data, length);
+    ShellSort(data, length);
     /**************** end sort ****************/
 
 
     /**************** show result ****************/
-    printf("after SelectionSort :");
+    printf("after ShellSort :");
     printArray(data, length);
     /**************** end show result ****************/
 
